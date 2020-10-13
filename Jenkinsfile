@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     CommitHash = sh (script : "git log -n 1 --pretty=format:'%H'", returnStdout: true)
-                    builderDocker = docker.build("corrykalam/jenkins-frontend-example:${CommitHash}")
+                    builderDocker = docker.build("tresnaadin/jenkins-frontend-example:${CommitHash}")
                 }
             }
         }
@@ -58,7 +58,7 @@ pipeline {
             }
         }
 
-        stage('Deploy on devlop') {
+        stage('Deploy on develop') {
             when {
                 expression {
                     params.CICD == 'CICD Deployment' || BRANCH_NAME == 'dev'
@@ -69,7 +69,7 @@ pipeline {
                     sshPublisher(
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'develop-server',
+                                configName: 'dev-user',
                                 verbose: false,
                                 transfers: [
                                     sshTransfer(
@@ -96,7 +96,7 @@ pipeline {
                     sshPublisher(
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'production-server',
+                                configName: 'prod-user',
                                 verbose: false,
                                 transfers: [
                                     sshTransfer(
